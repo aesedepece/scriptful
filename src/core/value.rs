@@ -65,6 +65,23 @@ impl core::ops::Add for Value {
     }
 }
 
+#[allow(clippy::suspicious_arithmetic_impl)]
+impl core::ops::Mul for Value {
+    type Output = Self;
+
+    fn mul(self, rhs: Self) -> Self::Output {
+        use Value::*;
+        match (self, rhs) {
+            (Boolean(a), Boolean(b)) => Boolean(a && b),
+            (Float(a), Float(b)) => Float(a * b),
+            (Float(a), Integer(b)) => Float(a * b as f64),
+            (Integer(a), Integer(b)) => Integer(a * b),
+            (Integer(a), Float(b)) => Float(a as f64 * b),
+            (a, b) => panic!("Types of {:?} and {:?} cannot be multiplied together", a, b),
+        }
+    }
+}
+
 impl core::ops::Sub for Value {
     type Output = Self;
 
