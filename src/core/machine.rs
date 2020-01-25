@@ -81,9 +81,9 @@ where
     /// // The length of the stack should be 2.
     /// assert_eq!(machine.stack_length(), 2);
     ///
-    /// // Operating an `OpCode::Add` should pop the two topmost values in the stack, add them
+    /// // Operating an `MathOperator::Add` should pop the two topmost values in the stack, add them
     /// // together, and push the result back into the stack.
-    /// let result = machine.operate(&Item::Operator(OpCode::Add));
+    /// let result = machine.operate(&Item::Operator(MathOperator::Add));
     /// // Make sure the result is 3.
     /// assert_eq!(result, &Integer(3));
     /// // The final length of the stack should be 1 again.
@@ -125,7 +125,7 @@ where
     /// let result = machine.run_script(&[
     ///    Item::Value(Integer(1)),
     ///    Item::Value(Integer(2)),
-    ///    Item::Operator(OpCode::Add),
+    ///    Item::Operator(MathOperator::Add),
     /// ]);
     ///
     /// // The result should unsurprisingly be 3.

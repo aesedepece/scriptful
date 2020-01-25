@@ -1,32 +1,43 @@
 use crate::prelude::*;
 
+/// Frequently used mathematical operators.
 #[derive(Debug, PartialEq, Eq)]
-pub enum OpCode {
+pub enum MathOperator {
+    /// Addition of two numbers (`a + b`).
     Add,
+    /// Equivalence of two numbers (`a == b`).
     Equal,
+    /// Negation of one number (`-a`).
     Not,
+    /// Subtraction of two numbers (`a - b`).
     Sub,
 }
 
-pub fn simple_math_op_sys(stack: &mut Stack, operator: &OpCode) {
+/// A simple operator system that decides how each of the variants of [`MathOperator`][MathOperator]
+/// trigger push and pulls on the [`Stack`][Stack] inside a [`Machine`][Machine].
+///
+/// [MathOperator]: enum.MathOperator.html
+/// [Stack]: ../../core/stack/struct.Stack.html
+/// [Machine]: ../../core/machine/struct.Machine.html
+pub fn simple_math_op_sys(stack: &mut Stack, operator: &MathOperator) {
     use crate::prelude::Value::*;
 
     match operator {
-        OpCode::Add => {
+        MathOperator::Add => {
             let a = stack.pop();
             let b = stack.pop();
             stack.push(a + b);
         }
-        OpCode::Equal => {
+        MathOperator::Equal => {
             let a = stack.pop();
             let b = stack.pop();
             stack.push(Boolean(a == b));
         }
-        OpCode::Not => {
+        MathOperator::Not => {
             let x = stack.pop();
             stack.push(!x);
         }
-        OpCode::Sub => {
+        MathOperator::Sub => {
             let a = stack.pop();
             let b = stack.pop();
             stack.push(a - b);
