@@ -12,12 +12,6 @@
 use crate::prelude::*;
 use smallvec::SmallVec;
 
-#[derive(Debug, Default)]
-pub struct Stack {
-    main: SmallVec<[Value; 64]>,
-    alt: SmallVec<[Value; 8]>,
-}
-
 /// An ordered sequence of values that can be operated in a [LIFO]-alike way.
 ///
 /// Every `Stack` actually comprises two sequences of values: the `main` sub-stack and the `alt` sub-stack.
@@ -29,6 +23,12 @@ pub struct Stack {
 /// [LIFO]: https://en.wikipedia.org/wiki/Stack_(abstract_data_type)
 /// [pop_into_alt]: #method.pop_into_alt
 /// [push_from_alt]: #method.push_from_alt
+#[derive(Debug, Default)]
+pub struct Stack {
+    main: SmallVec<[Value; 64]>,
+    alt: SmallVec<[Value; 8]>,
+}
+
 impl Stack {
     /// Returns the number of values in the `main` sub-stack, also referred to as its 'length'.
     ///
