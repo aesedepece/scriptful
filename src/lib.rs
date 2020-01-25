@@ -25,16 +25,15 @@
 //! use scriptful::prelude::*;
 //! use scriptful::prelude::Value::*;
 //!
+//! // You can define your own operators.
 //! #[derive(Debug, PartialEq, Eq)]
-//! /// You can define your own operators.
 //! enum MyOperator {
 //!     Add,
 //!     Equal,
 //!     Sub,
 //! }
 //!
-//! /// An operator system decides what to do with the stack when each operator is
-//! /// applied on it.
+//! // An operator system decides what to do with the stack when each operator is applied on it.
 //! fn my_operator_system(stack: &mut Stack, operator: &MyOperator) {
 //!     match operator {
 //!         MyOperator::Add => {
@@ -58,14 +57,14 @@
 //! // Instantiate the machine with a reference to your operator system.
 //! let mut machine = Machine::new(&my_operator_system);
 //!
-//! // Run a script that simply adds `1` and `2`
+//! // Run a script that simply adds 1 and 2.
 //! let result = machine.run_script(&[
 //!     Item::Value(Integer(1)),
 //!     Item::Value(Integer(2)),
 //!     Item::Operator(MyOperator::Add),
 //! ]);
 //!
-//! // The result should unsurprisingly be `3`
+//! // The result should unsurprisingly be 3.
 //! assert_eq!(*result, Integer(3));
 //! ```
 //!
