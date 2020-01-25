@@ -15,7 +15,7 @@ use smallvec::SmallVec;
 #[derive(Debug, Default)]
 pub struct Stack {
     main: SmallVec<[Value; 64]>,
-    alt: SmallVec<[Value; 64]>,
+    alt: SmallVec<[Value; 8]>,
 }
 
 /// An ordered sequence of values that can be operated in a [LIFO]-alike way.
