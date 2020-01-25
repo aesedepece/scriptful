@@ -69,6 +69,15 @@
 //! assert_eq!(*result, Integer(3));
 //! ```
 //!
+//! # Known limitations
+//!
+//! - [Stacks][Stack] are currently implemented using a fixed-length, actually stack-allocated vectors using [smallvec].
+//! Thus the `main` sub-stack is limited to 64 values, and the `alt` sub-stack can only hold up to 8.
+//! - _Beware of unwraps!_ This is a proof-of-concept and it is modelled to panic upon errors.
+//! Making the library safe for production usage is in the near horizon though.
+//! - The possible value types that can be pushed into the [Stack] is not generic nor customizable.
+//! Such feature will only be added if someone actually requests it.
+//!
 //! # License
 //!
 //! Scriptful is distributed under the terms of both the MIT license and the Apache License (Version 2.0).
@@ -78,14 +87,15 @@
 //! [Forth]: https://en.wikipedia.org/wiki/Forth_(programming_language)
 //! [BitcoinScript]: https://en.bitcoin.it/wiki/Script
 //! [LIFO]: https://en.wikipedia.org/wiki/Stack_(abstract_data_type)
-//! [Stack]: core/stack/
-//! [Item]: core/item/
+//! [Stack]: core/stack/struct.Stack.html
+//! [Item]: core/item/enum.Item.html
 //! [Operator system]: op_systems/
 //! [Script]: core/type.Script.html
-//! [Machine]: core/machine/
+//! [Machine]: core/machine/struct.Machine.html
 //! [LICENSE-APACHE]: https://github.com/aesedepece/scriptful/blob/master/LICENSE-APACHE
 //! [LICENSE-MIT]: https://github.com/aesedepece/scriptful/blob/master/LICENSE-MIT
 //! [COPYRIGHT]: https://github.com/aesedepece/scriptful/blob/master/COPYRIGHT
+//! [smallvec]: https://crates.io/crates/smallvec
 
 #![no_std]
 #![doc(html_playground_url = "https://play.rust-lang.org/")]
