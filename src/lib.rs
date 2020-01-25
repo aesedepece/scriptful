@@ -1,6 +1,6 @@
 //! ___Scriptful_ is a minimalistic `no_std` stack machine for executing domain specific interpreted languages.__
 //!
-//! This library is heavily inspired by [FORTH] and [Script][BitcoinScript], the scripting language in Bitcoin.
+//! This library is heavily inspired by [Forth] and [Script][BitcoinScript], the scripting language in Bitcoin.
 //!
 //! # General design
 //!
@@ -75,7 +75,7 @@
 //!
 //! See [LICENSE-APACHE] and [LICENSE-MIT], and [COPYRIGHT] for details.
 //!
-//! [FORTH]: https://en.wikipedia.org/wiki/Forth_(programming_language)
+//! [Forth]: https://en.wikipedia.org/wiki/Forth_(programming_language)
 //! [BitcoinScript]: https://en.bitcoin.it/wiki/Script
 //! [LIFO]: https://en.wikipedia.org/wiki/Stack_(abstract_data_type)
 //! [Stack]: core/stack/
