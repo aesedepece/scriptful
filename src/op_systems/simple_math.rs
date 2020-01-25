@@ -1,14 +1,14 @@
 use crate::prelude::*;
 
 #[derive(Debug, PartialEq, Eq)]
-enum OpCode {
+pub enum OpCode {
     Add,
     Equal,
     Not,
     Sub,
 }
 
-fn simple_math_op_sys(stack: &mut Stack, operator: &OpCode) {
+pub fn simple_math_op_sys(stack: &mut Stack, operator: &OpCode) {
     use crate::prelude::Value::*;
 
     match operator {
@@ -50,5 +50,4 @@ mod tests {
             Item::Value(Value::Integer(2)),
         ]);
     }
-
 }
