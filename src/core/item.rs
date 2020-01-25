@@ -1,14 +1,34 @@
 use crate::prelude::*;
 
-#[derive(Debug)]
-/// An `Item` is each of the atomic entities that conform a `Script`.
+/// An `Item` is each of the atomic entities that conform a [`Script`][Script].
 ///
-/// In other words, a `Script` is no more than an ordered sequence of `Item`s.
+/// In other words, a [`Script`][Script] is no more than an array of `Item`s in the likes of
+/// `[Item<Op>]`.
+///
+/// `Ìtem` does not implement any methods other than implementations of some traits from the
+/// [`core`][core] crate.
+///
+/// [Script]: ../type.Script.html
+/// [core]: https://doc.rust-lang.org/nightly/core/
+#[derive(Debug)]
 pub enum Item<Op>
 where
     Op: core::fmt::Debug + core::cmp::Eq,
 {
+    /// An operator code, either a member of an user-defined [`enum`][enum] containing different operator
+    /// identifiers, or any of the ones found in the [`op_systems`][op_systems] module.
+    ///
+    /// [enum]: https://doc.rust-lang.org/std/keyword.enum.html
+    /// [op_systems]: ../../op_systems/
     Operator(Op),
+    /// An instance of any of the variants of [`Value`][Value], i.e. [`Boolean`][Boolean],
+    /// [`Float`][Float], [`Integer`][Integer] or [`String`][String].
+    ///
+    /// [Value]: ../value/enum.Value.html
+    /// [Boolean]: ../value/enum.Value.html#variant.Boolean
+    /// [Float]: ../value/enum.Value.html#variant.Float
+    /// [Integer]: ../value/enum.Value.html#variant.Integer
+    /// [String]: ../value/enum.Value.html#variant.String
     Value(Value),
 }
 
