@@ -80,11 +80,11 @@ See [LICENSE-APACHE] and [LICENSE-MIT], and [COPYRIGHT] for details.
 [FORTH]: https://en.wikipedia.org/wiki/Forth_(programming_language)
 [BitcoinScript]: https://en.bitcoin.it/wiki/Script
 [LIFO]: https://en.wikipedia.org/wiki/Stack_(abstract_data_type)
-[Stack]: core/stack
-[Item]: core/item
-[Operator system]: op_systems
-[Script]: core/type.Script.html
-[Machine]: core/machine
+[Stack]: https://docs.rs/scriptful/latest/scriptful/core/stack/struct.Stack.html
+[Item]: https://docs.rs/scriptful/latest/scriptful/core/item/enum.Item.html
+[Operator system]: https://docs.rs/scriptful/latest/scriptful/op_systems/
+[Script]: https://docs.rs/scriptful/latest/scriptful/core/type.Script.html
+[Machine]: https://docs.rs/scriptful/latest/scriptful/core/machine/struct.Machine.html
 [LICENSE-APACHE]: LICENSE-APACHE
 [LICENSE-MIT]: LICENSE-MIT
 [COPYRIGHT]: COPYRIGHT

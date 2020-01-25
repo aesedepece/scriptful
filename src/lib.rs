@@ -78,11 +78,11 @@
 //! [FORTH]: https://en.wikipedia.org/wiki/Forth_(programming_language)
 //! [BitcoinScript]: https://en.bitcoin.it/wiki/Script
 //! [LIFO]: https://en.wikipedia.org/wiki/Stack_(abstract_data_type)
-//! [Stack]: core/stack
-//! [Item]: core/item
-//! [Operator system]: op_systems
+//! [Stack]: core/stack/
+//! [Item]: core/item/
+//! [Operator system]: op_systems/
 //! [Script]: core/type.Script.html
-//! [Machine]: core/machine
+//! [Machine]: core/machine/
 //! [LICENSE-APACHE]: https://github.com/aesedepece/scriptful/blob/master/LICENSE-APACHE
 //! [LICENSE-MIT]: https://github.com/aesedepece/scriptful/blob/master/LICENSE-MIT
 //! [COPYRIGHT]: https://github.com/aesedepece/scriptful/blob/master/COPYRIGHT
@@ -94,10 +94,10 @@
 ///
 /// Provides all the [`Item`][Item], [`Stack`][Stack], [`Machine`][Machine] and [`Value`][Value] goodness.
 ///
-/// [Item]: item
-/// [Stack]: stack
-/// [Machine]: machine
-/// [Value]: value
+/// [Item]: item/
+/// [Stack]: stack/
+/// [Machine]: machine/
+/// [Value]: value/
 pub mod core;
 /// Some ready-to-use operator systems that may be useful for _someone_, _somewhere_, _somewhen_.
 pub mod op_systems;

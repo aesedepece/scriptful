@@ -7,7 +7,7 @@
 //! [LIFO]: https://en.wikipedia.org/wiki/Stack_(abstract_data_type)
 //! [Stack]: core/stack/struct.Stack.html
 //! [Script]: core/type.Script.html
-//! [Machine]: core/machine
+//! [Machine]: core/machine/
 
 use crate::prelude::*;
 use smallvec::SmallVec;
