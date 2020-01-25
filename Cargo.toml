@@ -5,6 +5,7 @@ authors = ["The Scriptful Project Developers"]
 license = "MIT OR Apache-2.0"
 readme = "README.md"
 documentation = "https://docs.rs/scriptful"
+homepage = "https://github.com/aesedepece/scriptful"
 repository = "https://github.com/aesedepece/scriptful"
 description = """
 A minimalist, `no_std` stack machine library for executing domain specific interpreted languages.
