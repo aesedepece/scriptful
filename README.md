@@ -1,4 +1,4 @@
-# Scriptful
+# ![Scriptful](logo.png)
 
 [![Build Status](https://travis-ci.com/aesedepece/scriptful.svg?branch=master)](https://travis-ci.com/aesedepece/scriptful)
 [![Crate](https://img.shields.io/crates/v/scriptful.svg)](https://crates.io/crates/scriptful)
