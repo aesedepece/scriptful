@@ -102,3 +102,61 @@ impl core::cmp::PartialEq for Value {
         }
     }
 }
+
+// The `Float` variant is untested because floating point numbers cannot be trivially nor accurately
+// compared.
+#[cfg(test)]
+mod tests {
+    use crate::core::value::Value::*;
+
+    #[test]
+    fn test_negation() {
+        assert_eq!(!Boolean(true), Boolean(false));
+        assert_eq!(!Boolean(false), Boolean(true));
+        assert_eq!(!Integer(0), Integer(0));
+        assert_eq!(!Integer(1), Integer(-1));
+    }
+
+    #[test]
+    fn test_addition() {
+        assert_eq!(Boolean(false) + Boolean(false), Boolean(false));
+        assert_eq!(Boolean(false) + Boolean(true), Boolean(true));
+        assert_eq!(Boolean(true) + Boolean(false), Boolean(true));
+        assert_eq!(Boolean(true) + Boolean(true), Boolean(true));
+        assert_eq!(Integer(1) + Integer(2), Integer(3));
+        assert_eq!(Integer(1) + Integer(-2), Integer(-1));
+    }
+
+    #[test]
+    fn test_subtraction() {
+        assert_eq!(Boolean(false) - Boolean(false), Boolean(true));
+        assert_eq!(Boolean(false) - Boolean(true), Boolean(false));
+        assert_eq!(Boolean(true) - Boolean(false), Boolean(true));
+        assert_eq!(Boolean(true) - Boolean(true), Boolean(true));
+        assert_eq!(Integer(1) - Integer(2), Integer(-1));
+        assert_eq!(Integer(1) - Integer(-2), Integer(3));
+    }
+
+    #[test]
+    fn test_multiplication() {
+        assert_eq!(Boolean(false) * Boolean(false), Boolean(false));
+        assert_eq!(Boolean(false) * Boolean(true), Boolean(false));
+        assert_eq!(Boolean(true) * Boolean(false), Boolean(false));
+        assert_eq!(Boolean(true) * Boolean(true), Boolean(true));
+        assert_eq!(Integer(1) * Integer(2), Integer(2));
+        assert_eq!(Integer(1) * Integer(-2), Integer(-2));
+    }
+
+    #[test]
+    fn test_comparison() {
+        assert_eq!(Boolean(false) == Boolean(false), true);
+        assert_eq!(Boolean(false) == Boolean(true), false);
+        assert_eq!(Boolean(true) == Boolean(false), false);
+        assert_eq!(Boolean(true) == Boolean(true), true);
+        assert_eq!(Integer(1) == Integer(1), true);
+        assert_eq!(Integer(1) == Integer(2), false);
+        assert_eq!(Integer(-1) == Integer(-1), true);
+        assert_eq!(Integer(-1) == Integer(-2), false);
+        assert_eq!(Integer(1) == Integer(-1), false);
+    }
+}
