@@ -1,5 +1,10 @@
 # Scriptful
 
+[![Build Status](https://travis-ci.com/aesedepece/scriptful.svg?branch=master)](https://travis-ci.com/aesedepece/scriptful)
+[![Crate](https://img.shields.io/crates/v/scriptful.svg)](https://crates.io/crates/scriptful)
+[![Docs](https://docs.rs/scriptful/badge.svg)](https://docs.rs/scriptful)
+![License](https://img.shields.io/crates/l/scriptful.svg)
+
 ___Scriptful_ is a minimalistic `no_std` stack machine for executing domain specific interpreted languages.__
 
 This library is heavily inspired by [Forth] and [Script][BitcoinScript], the scripting language in Bitcoin.
