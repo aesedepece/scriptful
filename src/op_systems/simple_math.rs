@@ -54,18 +54,22 @@ pub fn simple_math_op_sys(stack: &mut Stack, operator: &MathOperator) {
 
 #[cfg(test)]
 mod tests {
-    use crate::op_systems::simple_math::{simple_math_op_sys, OpCode};
+    use crate::op_systems::simple_math::{simple_math_op_sys, MathOperator};
+    use crate::prelude::Value::*;
     use crate::prelude::*;
 
     #[test]
     fn test_one_plus_one_equals_two() {
         let machine = &mut Machine::new(&simple_math_op_sys);
 
-        machine.run_script(&[
-            Item::Value(Value::Integer(1)),
-            Item::Value(Value::Integer(1)),
-            Item::Operator(OpCode::Add),
-            Item::Value(Value::Integer(2)),
+        let result = machine.run_script(&[
+            Item::Value(Integer(1)),
+            Item::Value(Integer(1)),
+            Item::Operator(MathOperator::Add),
+            Item::Value(Integer(2)),
+            Item::Operator(MathOperator::Equal),
         ]);
+
+        assert_eq!(result, &Boolean(true));
     }
 }
