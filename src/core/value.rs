@@ -48,12 +48,14 @@ impl core::ops::Not for Value {
     }
 }
 
+#[allow(clippy::suspicious_arithmetic_impl)]
 impl core::ops::Add for Value {
     type Output = Self;
 
     fn add(self, rhs: Self) -> Self::Output {
         use Value::*;
         match (self, rhs) {
+            (Boolean(a), Boolean(b)) => Boolean(a || b),
             (Float(a), Float(b)) => Float(a + b),
             (Float(a), Integer(b)) => Float(a + b as f64),
             (Integer(a), Integer(b)) => Integer(a + b),
