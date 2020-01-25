@@ -113,5 +113,5 @@ pub mod op_systems;
 
 /// Re-exports the most frequently used parts of this library so that they can be used more conveniently.
 pub mod prelude {
-    pub use crate::core::{item::Item, machine::Machine, stack::Stack, value::Value};
+    pub use crate::core::{item::Item, machine::Machine, stack::Stack, value::Value, Script};
 }
