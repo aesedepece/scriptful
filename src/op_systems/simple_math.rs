@@ -7,6 +7,8 @@ pub enum MathOperator {
     Add,
     /// Equivalence of two numbers (`a == b`).
     Equal,
+    /// Multiplication of two numbers (`a * b`)
+    Mul,
     /// Negation of one number (`-a`).
     Not,
     /// Subtraction of two numbers (`a - b`).
@@ -32,6 +34,11 @@ pub fn simple_math_op_sys(stack: &mut Stack, operator: &MathOperator) {
             let a = stack.pop();
             let b = stack.pop();
             stack.push(Boolean(a == b));
+        }
+        MathOperator::Mul => {
+            let a = stack.pop();
+            let b = stack.pop();
+            stack.push(a * b);
         }
         MathOperator::Not => {
             let x = stack.pop();
