@@ -27,7 +27,7 @@ where
     /// [`Float`][Float], [`Integer`][Integer] or [`String`][String].
     ///
     /// [enum]: https://doc.rust-lang.org/std/keyword.enum.html
-    ///  [Value]: ../value/enum.Value.html
+    /// [Value]: ../value/enum.Value.html
     /// [Boolean]: ../value/enum.Value.html#variant.Boolean
     /// [Float]: ../value/enum.Value.html#variant.Float
     /// [Integer]: ../value/enum.Value.html#variant.Integer

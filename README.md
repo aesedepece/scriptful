@@ -5,16 +5,17 @@
 [![Docs](https://docs.rs/scriptful/badge.svg)](https://docs.rs/scriptful)
 ![License](https://img.shields.io/crates/l/scriptful.svg)
 
-___Scriptful_ is a minimalistic `no_std` stack machine for executing domain specific interpreted languages.__
+___Scriptful_ is a minimalist `no_std` stack machine for interpreting scripts written with domain specific interpreted languages.__
 
-This library is heavily inspired by [Forth] and [Script][BitcoinScript], the scripting language in Bitcoin.
+This library is heavily inspired by the [Forth] programming language and [Script][BitcoinScript] (the scripting language in Bitcoin).
 
 ## General design
 
-The whole library is built around four main concepts:
+The whole library is built around these concepts:
 
 - __[Stack]__: an ordered sequence of values that can be operated in a [LIFO]-alike way.
 - __[Item]__: either a `Value` (a piece of data to be pushed into the stack) or an `Operator` (the descriptor for an action that operates on the topmost items in the stack).
+- __Type system__: an [`enum`][enum] whose variants are all the possible data types allowed in a [`Stack`][Stack].
 - __[Operator system]__: a function that decides how each operator will mutate a given stack.
 - __[Script]__: an ordered sequence of items (values and operators) that can be passed to an operator system for operating on a given stack.
 - __[Machine]__: a convenient wrapper around a stack that enables multiple modes of operation.
@@ -22,26 +23,26 @@ The whole library is built around four main concepts:
 Using this library is as easy as:
 
 1. Defining your own set of operators, or using any of the ones that come bundled in the [`op_systems`][Operator system] module.
-2. Defining your own [operator system][Operator system] function, or using any of the ones that come bundled in the [`op_systems`][Operator system] module.
-3. Instantiating a [machine][Machine] with a reference to your operator system.
-4. Composing a [script][Script] and running it in the machine.
+2. Defining your own type system, or using the [`Value`][Value] type system that comes bundled in the [`core::value`][Value] module.
+3. Defining your own [operator system][Operator system] function, or using any of the ones that come bundled in the [`op_systems`][Operator system] module.
+4. Instantiating a [machine][Machine] with a reference to your operator system.
+5. Composing a [script][Script] and running it in the machine.
 
 ## Quick example
 
 ```rust
 use scriptful::prelude::*;
-use scriptful::prelude::Value::*;
+use scriptful::core::value::Value::*;
 
+// You can define your own operators.
 #[derive(Debug, PartialEq, Eq)]
-/// You can define your own operators.
 enum MyOperator {
     Add,
     Equal,
     Sub,
 }
 
-/// An operator system decides what to do with the stack when each operator is
-/// applied on it.
+// An operator system decides what to do with the stack when each operator is applied on it.
 fn my_operator_system(stack: &mut Stack, operator: &MyOperator) {
     match operator {
         MyOperator::Add => {
@@ -52,7 +53,7 @@ fn my_operator_system(stack: &mut Stack, operator: &MyOperator) {
         MyOperator::Equal => {
             let a = stack.pop();
             let b = stack.pop();
-            stack.push(Value::Boolean(a == b));
+            stack.push(Boolean(a == b));
         }
         MyOperator::Sub => {
             let a = stack.pop();
@@ -65,15 +66,15 @@ fn my_operator_system(stack: &mut Stack, operator: &MyOperator) {
 // Instantiate the machine with a reference to your operator system.
 let mut machine = Machine::new(&my_operator_system);
 
-// Run a script that simply adds `1` and `2`
+// Run a script that simply adds 1 and 2.
 let result = machine.run_script(&[
     Item::Value(Integer(1)),
     Item::Value(Integer(2)),
     Item::Operator(MyOperator::Add),
 ]);
 
-// The result should unsurprisingly be `3`
-assert_eq!(*result, Integer(3));
+// The result should unsurprisingly be 3.
+assert_eq!(result, Some(&Integer(3)));
 ```
 
 ## Known limitations
@@ -100,6 +101,8 @@ See [LICENSE-APACHE] and [LICENSE-MIT], and [COPYRIGHT] for details.
 [Script]: https://docs.rs/scriptful/latest/scriptful/core/type.Script.html
 [Machine]: https://docs.rs/scriptful/latest/scriptful/core/machine/struct.Machine.html
 [smallvec]: https://crates.io/crates/smallvec
+[Value]: core/value/enum.Value.html
+[enum]: https://doc.rust-lang.org/std/keyword.enum.html
 [LICENSE-APACHE]: LICENSE-APACHE
 [LICENSE-MIT]: LICENSE-MIT
 [COPYRIGHT]: COPYRIGHT

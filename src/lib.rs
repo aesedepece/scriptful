@@ -1,13 +1,15 @@
-//! ___Scriptful_ is a minimalistic `no_std` stack machine for executing domain specific interpreted languages.__
+//! ___Scriptful_ is a minimalist `no_std` stack machine for interpreting scripts written using domain specific interpreted languages.__
 //!
-//! This library is heavily inspired by [Forth] and [Script][BitcoinScript], the scripting language in Bitcoin.
+//! This library is heavily inspired by the [Forth] programming language and [Script][BitcoinScript]
+//! (the scripting language in Bitcoin).
 //!
 //! # General design
 //!
-//! The whole library is built around four main concepts:
+//! The whole library is built around these concepts:
 //!
 //! - __[Stack]__: an ordered sequence of values that can be operated in a [LIFO]-alike way.
 //! - __[Item]__: either a `Value` (a piece of data to be pushed into the stack) or an `Operator` (the descriptor for an action that operates on the topmost items in the stack).
+//! - __Type system__: an [`enum`][enum] whose variants are all the possible data types allowed in a [`Stack`][Stack].
 //! - __[Operator system]__: a function that decides how each operator will mutate a given stack.
 //! - __[Script]__: an ordered sequence of items (values and operators) that can be passed to an operator system for operating on a given stack.
 //! - __[Machine]__: a convenient wrapper around a stack that enables multiple modes of operation.
@@ -15,9 +17,10 @@
 //! Using this library is as easy as:
 //!
 //! 1. Defining your own set of operators, or using any of the ones that come bundled in the [`op_systems`][Operator system] module.
-//! 2. Defining your own [operator system][Operator system] function, or using any of the ones that come bundled in the [`op_systems`][Operator system] module.
-//! 3. Instantiating a [machine][Machine] with a reference to your operator system.
-//! 4. Composing a [script][Script] and running it in the machine.
+//! 2. Defining your own type system, or using the [`Value`][Value] type system that comes bundled in the [`core::value`][Value] module.
+//! 3. Defining your own [operator system][Operator system] function, or using any of the ones that come bundled in the [`op_systems`][Operator system] module.
+//! 4. Instantiating a [machine][Machine] with a reference to your operator system.
+//! 5. Composing a [script][Script] and running it in the machine.
 //!
 //! # Quick example
 //!
@@ -89,6 +92,8 @@
 //! [Operator system]: op_systems/
 //! [Script]: core/type.Script.html
 //! [Machine]: core/machine/struct.Machine.html
+//! [Value]: core/value/enum.Value.html
+//! [enum]: https://doc.rust-lang.org/std/keyword.enum.html
 //! [LICENSE-APACHE]: https://github.com/aesedepece/scriptful/blob/master/LICENSE-APACHE
 //! [LICENSE-MIT]: https://github.com/aesedepece/scriptful/blob/master/LICENSE-MIT
 //! [COPYRIGHT]: https://github.com/aesedepece/scriptful/blob/master/COPYRIGHT
