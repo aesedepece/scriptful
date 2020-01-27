@@ -65,7 +65,7 @@
 //! ]);
 //!
 //! // The result should unsurprisingly be 3.
-//! assert_eq!(*result, Integer(3));
+//! assert_eq!(result, Some(&Integer(3)));
 //! ```
 //!
 //! # Known limitations
