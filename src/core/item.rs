@@ -1,9 +1,9 @@
-use crate::prelude::*;
+use crate::core::value::Value;
 
-/// An `Item` is each of the atomic entities that conform a [`Script`][Script].
+/// An `Item` is each one of the entities that conform a [`Script`][Script].
 ///
 /// In other words, a [`Script`][Script] is no more than an array of `Item`s in the likes of
-/// `[Item<Op>]`.
+/// `[Item<Op, Val>]`.
 ///
 /// `Ìtem` does not implement any methods other than implementations of some traits from the
 /// [`core`][core] crate.
@@ -51,30 +51,31 @@ where
 
 #[cfg(test)]
 mod tests {
-    use crate::prelude::*;
+    use crate::core::item::Item::{self, *};
+    use crate::core::value::Value::*;
 
     #[test]
     fn test_eq() {
-        let op_item1: Item<u8> = Item::Operator(u8::default());
-        let op_item2: Item<u8> = Item::Operator(u8::default());
+        let op_item1: Item<u8> = Operator(u8::default());
+        let op_item2: Item<u8> = Operator(u8::default());
 
         assert_eq!(op_item1, op_item2);
 
-        let val_item1: Item<u8> = Item::Value(Value::Integer(i128::default()));
-        let val_item2: Item<u8> = Item::Value(Value::Integer(i128::default()));
+        let val_item1: Item<u8> = Value(Integer(i128::default()));
+        let val_item2: Item<u8> = Value(Integer(i128::default()));
 
         assert_eq!(val_item1, val_item2);
     }
 
     #[test]
     fn test_ne() {
-        let op_item1: Item<u8> = Item::Operator(u8::default());
-        let op_item2: Item<u8> = Item::Operator(u8::default() + 1);
+        let op_item1: Item<u8> = Operator(u8::default());
+        let op_item2: Item<u8> = Operator(u8::default() + 1);
 
         assert_ne!(op_item1, op_item2);
 
-        let val_item1: Item<u8> = Item::Value(Value::Integer(i128::default()));
-        let val_item2: Item<u8> = Item::Value(Value::Integer(i128::default() + 1));
+        let val_item1: Item<u8> = Value(Integer(i128::default()));
+        let val_item2: Item<u8> = Value(Integer(i128::default() + 1));
 
         assert_ne!(val_item1, val_item2);
 

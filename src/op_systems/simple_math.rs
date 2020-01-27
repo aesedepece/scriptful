@@ -22,7 +22,7 @@ pub enum MathOperator {
 /// [Stack]: ../../core/stack/struct.Stack.html
 /// [Machine]: ../../core/machine/struct.Machine.html
 pub fn simple_math_op_sys(stack: &mut Stack, operator: &MathOperator) {
-    use crate::prelude::Value::*;
+    use crate::core::value::Value::*;
 
     match operator {
         MathOperator::Add => {

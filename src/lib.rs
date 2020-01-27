@@ -74,8 +74,6 @@
 //! Thus the `main` sub-stack is limited to 64 values, and the `alt` sub-stack can only hold up to 8.
 //! - _Beware of unwraps!_ This is a proof-of-concept and it is modelled to panic upon errors.
 //! Making the library safe for production usage is in the near horizon though.
-//! - The possible value types that can be pushed into the [Stack] is not generic nor customizable.
-//! Such feature will only be added if someone actually requests it.
 //!
 //! # License
 //!
@@ -113,5 +111,5 @@ pub mod op_systems;
 
 /// Re-exports the most frequently used parts of this library so that they can be used more conveniently.
 pub mod prelude {
-    pub use crate::core::{item::Item, machine::Machine, stack::Stack, value::Value, Script};
+    pub use crate::core::{item::Item, machine::Machine, stack::Stack, Script};
 }

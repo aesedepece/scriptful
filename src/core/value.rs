@@ -1,4 +1,9 @@
-/// The only data type that can be actually pushed or pulled from a [`Stack`][Stack].
+/// An algebraic data type that can be used to represent many types of values that can be present in
+/// a [`Stack`][Stack].
+///
+/// Scriptful supports customization of value types through generics, yet this [`enum`][enum] is
+/// provided in expectation that some users will prefer not to define their own type systems but
+/// rather use a stock solution.
 ///
 /// `Value` has four variants that should cover most use cases, namely: [`Boolean`][Boolean],
 /// [`Float`][Float], [`Integer`][Integer] or [`String`][String].
@@ -6,14 +11,11 @@
 /// The point of `Value` is being used inside [`Script`s][Script] (wrapped in an [`Item`][Item]) or
 /// to be pushed into a [`Stack`][Stack].
 ///
-/// As explained in [known limitations], _"the possible value types that can be pushed into the
-/// Stack is not generic nor customizable. Such feature will only be added if someone actually
-/// equests it"_.
-///
 /// `Value` does not implement any methods other than implementations of some traits from the
 /// [`core`][core] crate.
 ///
 /// [Stack]: ../stack/struct.Stack.html
+/// [enum]: https://doc.rust-lang.org/std/keyword.enum.html
 /// [Boolean]: #variant.Boolean
 /// [Float]: #variant.Float
 /// [Integer]: #variant.Integer

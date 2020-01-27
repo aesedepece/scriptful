@@ -64,7 +64,7 @@ where
     ///
     /// ```rust
     /// use scriptful::prelude::*;
-    /// use scriptful::prelude::Value::*;
+    /// use scriptful::core::value::Value::*;
     /// use scriptful::op_systems::simple_math::*;
     ///
     /// // Instantiate the machine with a reference to your operator system, or any of the ones in
@@ -118,7 +118,7 @@ where
     ///
     /// ```rust
     /// use scriptful::prelude::*;
-    /// use scriptful::prelude::Value::*;
+    /// use scriptful::core::value::Value::*;
     /// use scriptful::op_systems::simple_math::*;
     ///
     /// // Instantiate the machine with a reference to your operator system, or any of the ones in
@@ -155,7 +155,7 @@ where
     ///
     /// ```rust
     /// use scriptful::prelude::*;
-    /// use scriptful::prelude::Value::*;
+    /// use scriptful::core::value::Value::*;
     /// use scriptful::op_systems::simple_math::*;
     ///
     /// // Instantiate the machine with a reference to your operator system, or any of the ones in
