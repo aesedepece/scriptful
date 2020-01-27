@@ -24,7 +24,7 @@
 /// [Item]: ../item/enum.Item.html
 /// [known limitations]: ../../#known-limitations
 /// [core]: https://doc.rust-lang.org/nightly/core/
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialOrd)]
 pub enum Value {
     /// A binary value: either `true` or `false`.
     Boolean(bool),
@@ -92,13 +92,23 @@ impl core::ops::Sub for Value {
     }
 }
 
+/// Approximate comparison, so as to support comparison of floating point values.
+///
+/// A floating point values is considered equal to another float or an integer if the difference is
+/// less than `10^9`.
 impl core::cmp::PartialEq for Value {
     fn eq(&self, other: &Self) -> bool {
         use Value::*;
         match (self, other) {
             (Boolean(a), Boolean(b)) => a == b,
-            (Float(_), _) | (_, Float(_)) => panic!("Float values cannot be compared"),
+            (Float(a), Float(b)) => (a - b) * (a - b) < 0.000_000_000_000_000_000_1,
+            (Float(a), Integer(b)) => {
+                (a - *b as f64) * (a - *b as f64) < 0.000_000_000_000_000_000_1
+            }
             (Integer(a), Integer(b)) => a == b,
+            (Integer(a), Float(b)) => {
+                (*a as f64 - b) * (*a as f64 - *b) < 0.000_000_000_000_000_000_1
+            }
             (String(a), String(b)) => a == b,
             _ => false,
         }
@@ -115,6 +125,8 @@ mod tests {
     fn test_negation() {
         assert_eq!(!Boolean(true), Boolean(false));
         assert_eq!(!Boolean(false), Boolean(true));
+        assert_eq!(!Float(0.), Float(0.));
+        assert_eq!(!Float(1.1), Float(-1.1));
         assert_eq!(!Integer(0), Integer(0));
         assert_eq!(!Integer(1), Integer(-1));
     }
@@ -125,8 +137,14 @@ mod tests {
         assert_eq!(Boolean(false) + Boolean(true), Boolean(true));
         assert_eq!(Boolean(true) + Boolean(false), Boolean(true));
         assert_eq!(Boolean(true) + Boolean(true), Boolean(true));
+        assert_eq!(Float(1.1) + Float(2.2), Float(3.3));
+        assert_eq!(Float(1.1) + Float(-2.2), Float(-1.1));
+        assert_eq!(Float(1.1) + Integer(2), Float(3.1));
+        assert_eq!(Float(1.1) + Integer(-2), Float(-0.9));
         assert_eq!(Integer(1) + Integer(2), Integer(3));
         assert_eq!(Integer(1) + Integer(-2), Integer(-1));
+        assert_eq!(Integer(1) + Float(2.2), Float(3.2));
+        assert_eq!(Integer(1) + Float(-2.1), Float(-1.1));
     }
 
     #[test]
@@ -135,8 +153,14 @@ mod tests {
         assert_eq!(Boolean(false) - Boolean(true), Boolean(false));
         assert_eq!(Boolean(true) - Boolean(false), Boolean(true));
         assert_eq!(Boolean(true) - Boolean(true), Boolean(true));
+        assert_eq!(Float(1.1) - Float(2.2), Float(-1.1));
+        assert_eq!(Float(1.1) - Float(-2.2), Float(3.3));
+        assert_eq!(Float(1.1) - Integer(2), Float(-0.9));
+        assert_eq!(Float(1.1) - Integer(-2), Float(3.1));
         assert_eq!(Integer(1) - Integer(2), Integer(-1));
         assert_eq!(Integer(1) - Integer(-2), Integer(3));
+        assert_eq!(Integer(1) - Float(2.2), Float(-1.2));
+        assert_eq!(Integer(1) - Float(-2.2), Float(3.2));
     }
 
     #[test]
@@ -145,8 +169,14 @@ mod tests {
         assert_eq!(Boolean(false) * Boolean(true), Boolean(false));
         assert_eq!(Boolean(true) * Boolean(false), Boolean(false));
         assert_eq!(Boolean(true) * Boolean(true), Boolean(true));
+        assert_eq!(Float(1.1) * Float(2.2), Float(2.42));
+        assert_eq!(Float(1.1) * Float(-2.2), Float(-2.42));
+        assert_eq!(Float(1.1) * Integer(2), Float(2.2));
+        assert_eq!(Float(1.1) * Integer(-2), Float(-2.2));
         assert_eq!(Integer(1) * Integer(2), Integer(2));
         assert_eq!(Integer(1) * Integer(-2), Integer(-2));
+        assert_eq!(Integer(1) * Float(2.2), Float(2.2));
+        assert_eq!(Integer(1) * Float(-2.2), Float(-2.2));
     }
 
     #[test]
@@ -155,10 +185,19 @@ mod tests {
         assert_eq!(Boolean(false) == Boolean(true), false);
         assert_eq!(Boolean(true) == Boolean(false), false);
         assert_eq!(Boolean(true) == Boolean(true), true);
+        assert_eq!(Float(1.1) == Float(1.1), true);
+        assert_eq!(Float(1.1) == Float(2.2), false);
+        assert_eq!(Float(-1.1) == Float(-1.1), true);
+        assert_eq!(Float(-1.1) == Float(-2.2), false);
+        assert_eq!(Float(1.1) == Float(-1.1), false);
+        assert_eq!(Float(1.) == Integer(1), true);
+        assert_eq!(Float(-1.) == Integer(-1), true);
         assert_eq!(Integer(1) == Integer(1), true);
         assert_eq!(Integer(1) == Integer(2), false);
         assert_eq!(Integer(-1) == Integer(-1), true);
         assert_eq!(Integer(-1) == Integer(-2), false);
         assert_eq!(Integer(1) == Integer(-1), false);
+        assert_eq!(Integer(1) == Float(1.), true);
+        assert_eq!(Integer(-1) == Float(-1.), true);
     }
 }
