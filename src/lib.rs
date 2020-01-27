@@ -23,7 +23,7 @@
 //!
 //! ```rust
 //! use scriptful::prelude::*;
-//! use scriptful::prelude::Value::*;
+//! use scriptful::core::value::Value::*;
 //!
 //! // You can define your own operators.
 //! #[derive(Debug, PartialEq, Eq)]
@@ -44,7 +44,7 @@
 //!         MyOperator::Equal => {
 //!             let a = stack.pop();
 //!             let b = stack.pop();
-//!             stack.push(Value::Boolean(a == b));
+//!             stack.push(Boolean(a == b));
 //!         }
 //!         MyOperator::Sub => {
 //!             let a = stack.pop();

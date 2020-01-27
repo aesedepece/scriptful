@@ -95,7 +95,7 @@ where
     ///
     /// ```rust
     /// use scriptful::prelude::*;
-    /// use scriptful::prelude::Value::*;
+    /// use scriptful::core::value::Value::*;
     ///
     /// let value = Integer(i128::default());
     /// let mut stack = Stack::default();
@@ -121,7 +121,7 @@ where
     ///
     /// ```rust
     /// use scriptful::prelude::*;
-    /// use scriptful::prelude::Value::*;
+    /// use scriptful::core::value::Value::*;
     ///
     /// let value = Integer(i128::default());
     /// let mut stack = Stack::default();
