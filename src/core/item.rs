@@ -11,30 +11,34 @@ use crate::prelude::*;
 /// [Script]: ../type.Script.html
 /// [core]: https://doc.rust-lang.org/nightly/core/
 #[derive(Debug)]
-pub enum Item<Op>
+pub enum Item<Op, Val = Value>
 where
     Op: core::fmt::Debug + core::cmp::Eq,
+    Val: core::fmt::Debug + core::cmp::PartialEq,
 {
-    /// An operator code, either a member of an user-defined [`enum`][enum] containing different operator
-    /// identifiers, or any of the ones found in the [`op_systems`][op_systems] module.
+    /// An operator code, either a variant of an user-defined [`enum`][enum] containing different
+    /// operator identifiers, or any of the ones found in the [`op_systems`][op_systems] module.
     ///
     /// [enum]: https://doc.rust-lang.org/std/keyword.enum.html
     /// [op_systems]: ../../op_systems/
     Operator(Op),
-    /// An instance of any of the variants of [`Value`][Value], i.e. [`Boolean`][Boolean],
+    /// A value, either a variant of an user-defined [`enum`][enum] representing a type system, or
+    /// an instance of any of the variants of [`Value`][Value], i.e. [`Boolean`][Boolean],
     /// [`Float`][Float], [`Integer`][Integer] or [`String`][String].
     ///
-    /// [Value]: ../value/enum.Value.html
+    /// [enum]: https://doc.rust-lang.org/std/keyword.enum.html
+    ///  [Value]: ../value/enum.Value.html
     /// [Boolean]: ../value/enum.Value.html#variant.Boolean
     /// [Float]: ../value/enum.Value.html#variant.Float
     /// [Integer]: ../value/enum.Value.html#variant.Integer
     /// [String]: ../value/enum.Value.html#variant.String
-    Value(Value),
+    Value(Val),
 }
 
-impl<Op> PartialEq for Item<Op>
+impl<Op, Val> PartialEq for Item<Op, Val>
 where
     Op: core::fmt::Debug + core::cmp::Eq,
+    Val: core::fmt::Debug + core::cmp::PartialEq,
 {
     fn eq(&self, other: &Self) -> bool {
         match (self, other) {
