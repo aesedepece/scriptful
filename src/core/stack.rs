@@ -9,7 +9,7 @@
 //! [Script]: core/type.Script.html
 //! [Machine]: core/machine/
 
-use crate::prelude::*;
+use crate::core::value::Value;
 use smallvec::SmallVec;
 
 /// An ordered sequence of values that can be operated in a [LIFO]-alike way.
@@ -23,20 +23,26 @@ use smallvec::SmallVec;
 /// [LIFO]: https://en.wikipedia.org/wiki/Stack_(abstract_data_type)
 /// [pop_into_alt]: #method.pop_into_alt
 /// [push_from_alt]: #method.push_from_alt
-#[derive(Debug, Default)]
-pub struct Stack {
-    main: SmallVec<[Value; 64]>,
-    alt: SmallVec<[Value; 8]>,
+#[derive(Debug)]
+pub struct Stack<Val = Value>
+where
+    Val: core::fmt::Debug,
+{
+    main: SmallVec<[Val; 64]>,
+    alt: SmallVec<[Val; 8]>,
 }
 
-impl Stack {
+impl<Val> Stack<Val>
+where
+    Val: core::fmt::Debug,
+{
     /// Returns the number of values in the `main` sub-stack, also referred to as its 'length'.
     ///
     /// # Examples
     ///
     /// ```rust
     /// use scriptful::prelude::*;
-    /// use scriptful::prelude::Value::*;
+    /// use scriptful::core::value::Value::*;
     ///
     /// let mut stack = Stack::default();
     /// assert_eq!(stack.length(), 0);
@@ -60,7 +66,7 @@ impl Stack {
     ///
     /// ```rust
     /// use scriptful::prelude::*;
-    /// use scriptful::prelude::Value::*;
+    /// use scriptful::core::value::Value::*;
     ///
     /// let value = Integer(i128::default());
     /// let mut stack = Stack::default();
@@ -69,7 +75,7 @@ impl Stack {
     ///
     /// assert_eq!(value, popped);
     /// ```
-    pub fn pop(&mut self) -> Value {
+    pub fn pop(&mut self) -> Val {
         self.main.pop().unwrap()
     }
 
@@ -96,16 +102,13 @@ impl Stack {
     /// stack.push(value.clone());
     /// let topmost = stack.topmost();
     ///
-    /// assert_eq!(value, *topmost);
+    /// assert_eq!(topmost, Some(&value));
     /// ```
-    pub fn push(&mut self, item: Value) {
+    pub fn push(&mut self, item: Val) {
         self.main.push(item)
     }
 
     /// Similar to [`push`][push], but instead of receiving the value to be pushed as an argument, it pops it from the `alt` sub-stack.
-    ///
-    /// # Panics
-    /// Panics if there are no values left in the `alt` sub-stack.
     ///
     /// [push]: #method.push
     pub fn push_from_alt(&mut self) {
@@ -114,8 +117,6 @@ impl Stack {
 
     /// Returns a reference to the last value in the `main` sub-stack.
     ///
-    /// # Panics
-    /// Panics if there are no values left in the `alt` sub-stack.
     /// # Examples
     ///
     /// ```rust
@@ -127,9 +128,21 @@ impl Stack {
     /// stack.push(value.clone());
     /// let topmost = stack.topmost();
     ///
-    /// assert_eq!(value, *topmost);
+    /// assert_eq!(topmost, Some(&value));
     /// ```
-    pub fn topmost(&self) -> &Value {
-        self.main.last().unwrap()
+    pub fn topmost(&self) -> Option<&Val> {
+        self.main.last()
+    }
+}
+
+impl<Val> core::default::Default for Stack<Val>
+where
+    Val: core::fmt::Debug,
+{
+    fn default() -> Self {
+        Self {
+            main: SmallVec::new(),
+            alt: SmallVec::new(),
+        }
     }
 }
