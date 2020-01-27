@@ -8,14 +8,18 @@ use crate::prelude::*;
 ///
 /// [Stack]: ../stack/struct.Stack.html
 /// [Item]: ../item/enum.Item.html
-pub struct Machine<'a, Op> {
-    op_sys: &'a dyn Fn(&mut Stack, &Op),
-    stack: Stack,
+pub struct Machine<'a, Op, Val>
+where
+    Val: core::fmt::Debug + core::cmp::PartialEq,
+{
+    op_sys: &'a dyn Fn(&mut Stack<Val>, &Op),
+    stack: Stack<Val>,
 }
 
-impl<'a, Op> Machine<'a, Op>
+impl<'a, Op, Val> Machine<'a, Op, Val>
 where
     Op: core::fmt::Debug + core::cmp::Eq,
+    Val: core::fmt::Debug + core::cmp::PartialEq + core::clone::Clone,
 {
     /// A simple factory that helps constructing a `Machine` around a existing operator system, be
     /// it user defined or any of the ones in the [`op_systems`][op_systems] module.
@@ -37,10 +41,10 @@ where
     /// // Make sure the stack is initialized to be empty.
     /// assert_eq!(machine.stack_length(), 0);
     /// ```
-    pub fn new(op_sys: &'a dyn Fn(&mut Stack, &Op)) -> Self {
+    pub fn new(op_sys: &'a dyn Fn(&mut Stack<Val>, &Op)) -> Self {
         Self {
             op_sys,
-            stack: Stack::default(),
+            stack: Stack::<Val>::default(),
         }
     }
 
@@ -70,14 +74,14 @@ where
     /// // Operating a `Value::Integer(1)` should simply push it into the stack.
     /// let result = machine.operate(&Item::Value(Integer(1)));
     /// // Make sure the value gets pushed.
-    /// assert_eq!(result, &Integer(1));
+    /// assert_eq!(result, Some(&Integer(1)));
     /// // The length of the stack should be 1.
     /// assert_eq!(machine.stack_length(), 1);
     ///
     /// // Operating a `Value::Integer(2)` should simply push it into the stack.
     /// let result = machine.operate(&Item::Value(Integer(2)));
     /// // Make sure the value gets pushed.
-    /// assert_eq!(result, &Integer(2));
+    /// assert_eq!(result, Some(&Integer(2)));
     /// // The length of the stack should be 2.
     /// assert_eq!(machine.stack_length(), 2);
     ///
@@ -85,7 +89,7 @@ where
     /// // together, and push the result back into the stack.
     /// let result = machine.operate(&Item::Operator(MathOperator::Add));
     /// // Make sure the result is 3.
-    /// assert_eq!(result, &Integer(3));
+    /// assert_eq!(result, Some(&Integer(3)));
     /// // The final length of the stack should be 1 again.
     /// assert_eq!(machine.stack_length(), 1);
     /// ```
@@ -94,7 +98,7 @@ where
     /// [run_script]: #method.run_script
     /// [Script]: ../type.Script.html
     /// [Stack]: ../stack/struct.Stack.html
-    pub fn operate(&mut self, item: &Item<Op>) -> &Value {
+    pub fn operate(&mut self, item: &Item<Op, Val>) -> Option<&Val> {
         match item {
             Item::Operator(operator) => (self.op_sys)(&mut self.stack, operator),
             Item::Value(value) => self.stack.push((*value).clone()),
@@ -129,7 +133,7 @@ where
     /// ]);
     ///
     /// // The result should unsurprisingly be 3.
-    /// assert_eq!(result, &Integer(3));
+    /// assert_eq!(result, Some(&Integer(3)));
     /// // The final length of the stack should be 1.
     /// assert_eq!(machine.stack_length(), 1);
     /// ```
@@ -137,7 +141,7 @@ where
     /// [Script]: ../type.Script.html
     /// [Stack]: ../stack/struct.Stack.html
     /// [Item]: ../item/enum.Item.html
-    pub fn run_script(&mut self, script: &Script<Op>) -> &Value {
+    pub fn run_script(&mut self, script: &Script<Op, Val>) -> Option<&Val> {
         for item in script {
             self.operate(item);
         }
@@ -182,7 +186,10 @@ where
 /// The explanation for this is straightforward: how do you print a dynamic reference to a function?
 ///
 /// [Stack]: ../stack/struct.Stack.html
-impl<'a, Op> core::fmt::Debug for Machine<'a, Op> {
+impl<'a, Op, Val> core::fmt::Debug for Machine<'a, Op, Val>
+where
+    Val: core::fmt::Debug + core::cmp::PartialEq,
+{
     fn fmt(&self, f: &mut core::fmt::Formatter) -> Result<(), core::fmt::Error> {
         write!(f, "{:?}", self.stack)
     }
