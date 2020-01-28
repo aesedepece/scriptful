@@ -1,6 +1,6 @@
 [package]
 name = "scriptful"
-version = "0.1.2"
+version = "0.2.0"
 authors = ["The Scriptful Project Developers"]
 license = "MIT OR Apache-2.0"
 readme = "README.md"
@@ -8,9 +8,9 @@ documentation = "https://docs.rs/scriptful"
 homepage = "https://github.com/aesedepece/scriptful"
 repository = "https://github.com/aesedepece/scriptful"
 description = """
-A minimalist, `no_std` stack machine library for executing domain specific interpreted languages.
+A minimalist, `no_std` stack machine library for interpreting domain specific interpreted languages.
 """
-keywords = ["stack", "machine", "script", "turing-incomplete", "dsl"]
+keywords = ["stack", "machine", "script", "dsl"]
 categories = ["parsing", "parser-implementations", "no-std"]
 edition = "2018"
 
