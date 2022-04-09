@@ -102,6 +102,8 @@
 #![no_std]
 #![doc(html_playground_url = "https://play.rust-lang.org/")]
 
+extern crate alloc;
+
 /// The core of this library.
 ///
 /// Provides all the [`Item`][Item], [`Stack`][Stack], [`Machine`][Machine] and [`Value`][Value] goodness.

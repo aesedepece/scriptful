@@ -9,8 +9,9 @@
 //! [Script]: core/type.Script.html
 //! [Machine]: core/machine/
 
+use alloc::vec::Vec;
+
 use crate::core::value::Value;
-use smallvec::SmallVec;
 
 /// An ordered sequence of values that can be operated in a [LIFO]-alike way.
 ///
@@ -28,8 +29,8 @@ pub struct Stack<Val = Value>
 where
     Val: core::fmt::Debug,
 {
-    main: SmallVec<[Val; 64]>,
-    alt: SmallVec<[Val; 8]>,
+    main: Vec<Val>,
+    alt: Vec<Val>,
 }
 
 impl<Val> Stack<Val>
@@ -141,8 +142,8 @@ where
 {
     fn default() -> Self {
         Self {
-            main: SmallVec::new(),
-            alt: SmallVec::new(),
+            main: Default::default(),
+            alt: Default::default(),
         }
     }
 }
