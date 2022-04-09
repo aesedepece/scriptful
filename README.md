@@ -5,7 +5,8 @@
 [![Docs](https://docs.rs/scriptful/badge.svg)](https://docs.rs/scriptful)
 ![License](https://img.shields.io/crates/l/scriptful.svg)
 
-___Scriptful_ is a minimalist `no_std` stack machine for interpreting scripts written with domain specific interpreted languages.__
+___Scriptful_ is a minimalist `no_std`, zero dependency stack machine for interpreting scripts written with domain
+ specific interpreted languages.__
 
 This library is heavily inspired by the [Forth] programming language and [Script][BitcoinScript] (the scripting language in Bitcoin).
 
@@ -79,12 +80,8 @@ assert_eq!(result, Some(&Integer(3)));
 
 ## Known limitations
 
-- [Stacks][Stack] are currently implemented using a fixed-length, actually stack-allocated vectors using [smallvec].
-Thus the `main` sub-stack is limited to 64 values, and the `alt` sub-stack can only hold up to 8.
 - _Beware of unwraps!_ This is a proof-of-concept and it is modelled to panic upon errors.
 Making the library safe for production usage is in the near horizon though.
-- The possible value types that can be pushed into the [Stack] is not generic nor customizable.
-Such feature will only be added if someone actually requests it.
 
 ## License
 
