@@ -2,6 +2,7 @@ use crate::prelude::*;
 
 /// Frequently used mathematical operators.
 #[derive(Debug, PartialEq, Eq)]
+#[cfg_attr(feature = "use_serde", derive(serde::Deserialize, serde::Serialize))]
 pub enum MathOperator {
     /// Addition of two numbers (`a + b`).
     Add,
@@ -58,19 +59,20 @@ mod tests {
     use crate::op_systems::simple_math::{simple_math_op_sys, MathOperator};
     use crate::prelude::Item::*;
     use crate::prelude::*;
+    use alloc::vec::Vec;
 
     #[test]
     fn test_one_plus_one_equals_two() {
         let machine = &mut Machine::new(&simple_math_op_sys);
 
         let result = machine
-            .run_script(&[
+            .run_script(&Vec::from([
                 Value(Integer(1)),
                 Value(Integer(1)),
                 Operator(MathOperator::Add),
                 Value(Integer(2)),
                 Operator(MathOperator::Equal),
-            ])
+            ]))
             .unwrap();
 
         assert_eq!(result, &Boolean(true));

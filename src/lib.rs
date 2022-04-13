@@ -13,6 +13,7 @@
 //! - __[Operator system]__: a function that decides how each operator will mutate a given stack.
 //! - __[Script]__: an ordered sequence of items (values and operators) that can be passed to an operator system for operating on a given stack.
 //! - __[Machine]__: a convenient wrapper around a stack that enables multiple modes of operation.
+//! - __[Codec]__: a set of methods for encoding and decoding scripts and items, normally into and from binary formats.
 //!
 //! Using this library is as easy as:
 //!
@@ -61,11 +62,11 @@
 //! let mut machine = Machine::new(&my_operator_system);
 //!
 //! // Run a script that simply adds 1 and 2.
-//! let result = machine.run_script(&[
+//! let result = machine.run_script(&Vec::from([
 //!     Item::Value(Integer(1)),
 //!     Item::Value(Integer(2)),
 //!     Item::Operator(MyOperator::Add),
-//! ]);
+//! ]));
 //!
 //! // The result should unsurprisingly be 3.
 //! assert_eq!(result, Some(&Integer(3)));
@@ -73,8 +74,6 @@
 //!
 //! # Known limitations
 //!
-//! - [Stacks][Stack] are currently implemented using a fixed-length, actually stack-allocated vectors using [smallvec].
-//! Thus the `main` sub-stack is limited to 64 values, and the `alt` sub-stack can only hold up to 8.
 //! - _Beware of unwraps!_ This is a proof-of-concept and it is modelled to panic upon errors.
 //! Making the library safe for production usage is in the near horizon though.
 //!
@@ -93,17 +92,19 @@
 //! [Script]: core/type.Script.html
 //! [Machine]: core/machine/struct.Machine.html
 //! [Value]: core/value/enum.Value.html
+//! [Codec]: codecs/index.html
 //! [enum]: https://doc.rust-lang.org/std/keyword.enum.html
 //! [LICENSE-APACHE]: https://github.com/aesedepece/scriptful/blob/master/LICENSE-APACHE
 //! [LICENSE-MIT]: https://github.com/aesedepece/scriptful/blob/master/LICENSE-MIT
 //! [COPYRIGHT]: https://github.com/aesedepece/scriptful/blob/master/COPYRIGHT
-//! [smallvec]: https://crates.io/crates/smallvec
 
 #![no_std]
 #![doc(html_playground_url = "https://play.rust-lang.org/")]
 
 extern crate alloc;
 
+#[cfg(feature = "codecs")]
+pub mod codecs;
 /// The core of this library.
 ///
 /// Provides all the [`Item`][Item], [`Stack`][Stack], [`Machine`][Machine] and [`Value`][Value] goodness.
@@ -118,5 +119,5 @@ pub mod op_systems;
 
 /// Re-exports the most frequently used parts of this library so that they can be used more conveniently.
 pub mod prelude {
-    pub use crate::core::{item::Item, machine::Machine, stack::Stack, Script};
+    pub use crate::core::{item::Item, machine::Machine, stack::Stack, Error, Script};
 }

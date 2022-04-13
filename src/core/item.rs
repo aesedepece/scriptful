@@ -10,11 +10,12 @@ use crate::core::value::Value;
 ///
 /// [Script]: ../type.Script.html
 /// [core]: https://doc.rust-lang.org/nightly/core/
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "use_serde", derive(serde::Deserialize, serde::Serialize))]
 pub enum Item<Op, Val = Value>
 where
-    Op: core::fmt::Debug + core::cmp::Eq,
-    Val: core::fmt::Debug + core::cmp::PartialEq,
+    Op: core::fmt::Debug,
+    Val: core::fmt::Debug,
 {
     /// An operator code, either a variant of an user-defined [`enum`][enum] containing different
     /// operator identifiers, or any of the ones found in the [`op_systems`][op_systems] module.
@@ -33,20 +34,6 @@ where
     /// [Integer]: ../value/enum.Value.html#variant.Integer
     /// [String]: ../value/enum.Value.html#variant.String
     Value(Val),
-}
-
-impl<Op, Val> PartialEq for Item<Op, Val>
-where
-    Op: core::fmt::Debug + core::cmp::Eq,
-    Val: core::fmt::Debug + core::cmp::PartialEq,
-{
-    fn eq(&self, other: &Self) -> bool {
-        match (self, other) {
-            (Self::Operator(op), Self::Operator(other_op)) => op == other_op,
-            (Self::Value(value), Self::Value(other_value)) => value == other_value,
-            _ => false,
-        }
-    }
 }
 
 #[cfg(test)]

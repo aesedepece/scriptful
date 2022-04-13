@@ -16,3 +16,7 @@ edition = "2018"
 
 [badges]
 travis-ci = { repository = "aesedepece/scriptful" }
+
+[features]
+default = ["codecs"]
+codecs = []

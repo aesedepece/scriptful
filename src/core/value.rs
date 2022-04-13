@@ -1,3 +1,7 @@
+use alloc::string::String;
+#[cfg(feature = "use_serde")]
+use serde;
+
 /// An algebraic data type that can be used to represent many types of values that can be present in
 /// a [`Stack`][Stack].
 ///
@@ -25,6 +29,7 @@
 /// [known limitations]: ../../#known-limitations
 /// [core]: https://doc.rust-lang.org/nightly/core/
 #[derive(Clone, Debug, PartialOrd)]
+#[cfg_attr(feature = "use_serde", derive(serde::Deserialize, serde::Serialize))]
 pub enum Value {
     /// A binary value: either `true` or `false`.
     Boolean(bool),
@@ -33,7 +38,7 @@ pub enum Value {
     /// A signed integer value.
     Integer(i128),
     /// A string of characters.
-    String(&'static str),
+    String(String),
 }
 
 impl core::ops::Not for Value {

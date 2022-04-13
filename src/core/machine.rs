@@ -1,3 +1,4 @@
+use crate::core::ScriptRef;
 use crate::prelude::*;
 
 /// A convenient wrapper around [`Stack`][Stack] providing multiple operation methods, i.e.
@@ -68,7 +69,7 @@ where
     /// use scriptful::op_systems::simple_math::*;
     ///
     /// // Instantiate the machine with a reference to your operator system, or any of the ones in
-    /// // the `op_systems` module.    
+    /// // the `op_systems` module.
     /// let mut machine = Machine::new(&simple_math_op_sys);
     ///
     /// // Operating a `Value::Integer(1)` should simply push it into the stack.
@@ -126,11 +127,11 @@ where
     /// let mut machine = Machine::new(&simple_math_op_sys);
     ///
     /// // Run a script that simply adds 1 and 2.
-    /// let result = machine.run_script(&[
+    /// let result = machine.run_script(&Vec::from([
     ///    Item::Value(Integer(1)),
     ///    Item::Value(Integer(2)),
     ///    Item::Operator(MathOperator::Add),
-    /// ]);
+    /// ]));
     ///
     /// // The result should unsurprisingly be 3.
     /// assert_eq!(result, Some(&Integer(3)));
@@ -141,7 +142,7 @@ where
     /// [Script]: ../type.Script.html
     /// [Stack]: ../stack/struct.Stack.html
     /// [Item]: ../item/enum.Item.html
-    pub fn run_script(&mut self, script: &Script<Op, Val>) -> Option<&Val> {
+    pub fn run_script(&mut self, script: ScriptRef<Op, Val>) -> Option<&Val> {
         for item in script {
             self.operate(item);
         }
@@ -163,12 +164,12 @@ where
     /// let mut machine = Machine::new(&simple_math_op_sys);
     ///
     /// // Run a script that simply pushes 4 values into the stack.
-    /// machine.run_script(&[
+    /// machine.run_script(&Vec::from([
     ///     Item::Value(Boolean(true)),
     ///     Item::Value(Float(3.141592)),
     ///     Item::Value(Integer(1337)),
-    ///     Item::Value(String("foo"))
-    /// ]);
+    ///     Item::Value(String("foo".into()))
+    /// ]));
     ///
     /// // The final length of the stack should be 4.
     /// assert_eq!(machine.stack_length(), 4);
