@@ -1,4 +1,5 @@
-//! ___Scriptful_ is a minimalist `no_std` stack machine for interpreting scripts written using domain specific interpreted languages.__
+//! ___Scriptful_ is a minimalist `no_std`, zero dependency stack machine for interpreting scripts written with domain
+//!  specific interpreted languages.__
 //!
 //! This library is heavily inspired by the [Forth] programming language and [Script][BitcoinScript]
 //! (the scripting language in Bitcoin).

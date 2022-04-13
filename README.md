@@ -20,6 +20,7 @@ The whole library is built around these concepts:
 - __[Operator system]__: a function that decides how each operator will mutate a given stack.
 - __[Script]__: an ordered sequence of items (values and operators) that can be passed to an operator system for operating on a given stack.
 - __[Machine]__: a convenient wrapper around a stack that enables multiple modes of operation.
+- __[Codec]__: a set of methods for encoding and decoding scripts and items, normally into and from binary formats.
 
 Using this library is as easy as:
 
