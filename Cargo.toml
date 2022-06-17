@@ -17,6 +17,10 @@ edition = "2021"
 [badges]
 travis-ci = { repository = "aesedepece/scriptful" }
 
+[dependencies]
+serde = { version = "1", features = ["derive"], optional = true }
+
 [features]
 default = ["codecs"]
 codecs = []
+use_serde = ["serde"]
