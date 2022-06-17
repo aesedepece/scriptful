@@ -12,7 +12,7 @@ A minimalist, `no_std` stack machine library for interpreting domain specific in
 """
 keywords = ["stack", "machine", "script", "dsl"]
 categories = ["parsing", "parser-implementations", "no-std"]
-edition = "2018"
+edition = "2021"
 
 [badges]
 travis-ci = { repository = "aesedepece/scriptful" }
