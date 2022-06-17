@@ -1,5 +1,6 @@
 use crate::core::ScriptRef;
 use crate::prelude::*;
+use core::marker::PhantomData;
 
 /// A convenient wrapper around [`Stack`][Stack] providing multiple operation methods, i.e.
 /// xecuting scripts by evaluating operators and pushing values into the stack.
@@ -9,18 +10,22 @@ use crate::prelude::*;
 ///
 /// [Stack]: ../stack/struct.Stack.html
 /// [Item]: ../item/enum.Item.html
-pub struct Machine<'a, Op, Val>
+pub struct Machine<Op, Val, F, E>
 where
     Val: core::fmt::Debug + core::cmp::PartialEq,
+    F: FnMut(&mut Stack<Val>, &Op, &mut ConditionStack) -> Result<(), E>,
 {
-    op_sys: &'a dyn Fn(&mut Stack<Val>, &Op),
+    op_sys: F,
     stack: Stack<Val>,
+    if_stack: ConditionStack,
+    phantom_op: PhantomData<fn(&Op)>,
 }
 
-impl<'a, Op, Val> Machine<'a, Op, Val>
+impl<Op, Val, F, E> Machine<Op, Val, F, E>
 where
     Op: core::fmt::Debug + core::cmp::Eq,
     Val: core::fmt::Debug + core::cmp::PartialEq + core::clone::Clone,
+    F: FnMut(&mut Stack<Val>, &Op, &mut ConditionStack) -> Result<(), E>,
 {
     /// A simple factory that helps constructing a `Machine` around a existing operator system, be
     /// it user defined or any of the ones in the [`op_systems`][op_systems] module.
@@ -42,10 +47,12 @@ where
     /// // Make sure the stack is initialized to be empty.
     /// assert_eq!(machine.stack_length(), 0);
     /// ```
-    pub fn new(op_sys: &'a dyn Fn(&mut Stack<Val>, &Op)) -> Self {
+    pub fn new(op_sys: F) -> Self {
         Self {
             op_sys,
             stack: Stack::<Val>::default(),
+            if_stack: ConditionStack::default(),
+            phantom_op: PhantomData,
         }
     }
 
@@ -99,13 +106,20 @@ where
     /// [run_script]: #method.run_script
     /// [Script]: ../type.Script.html
     /// [Stack]: ../stack/struct.Stack.html
-    pub fn operate(&mut self, item: &Item<Op, Val>) -> Option<&Val> {
+    pub fn operate(&mut self, item: &Item<Op, Val>) -> Result<Option<&Val>, E> {
         match item {
-            Item::Operator(operator) => (self.op_sys)(&mut self.stack, operator),
-            Item::Value(value) => self.stack.push((*value).clone()),
-        }
+            Item::Operator(operator) => {
+                (self.op_sys)(&mut self.stack, operator, &mut self.if_stack)
+            }
+            Item::Value(value) => {
+                if self.if_stack.all_true() {
+                    self.stack.push((*value).clone());
+                }
 
-        self.stack.topmost()
+                Ok(())
+            }
+        }
+        .map(|()| self.stack.topmost())
     }
 
     /// Evaluates a [`Script`][Script] in the context of a `Machine`.
@@ -142,12 +156,12 @@ where
     /// [Script]: ../type.Script.html
     /// [Stack]: ../stack/struct.Stack.html
     /// [Item]: ../item/enum.Item.html
-    pub fn run_script(&mut self, script: ScriptRef<Op, Val>) -> Option<&Val> {
+    pub fn run_script(&mut self, script: ScriptRef<Op, Val>) -> Result<Option<&Val>, E> {
         for item in script {
-            self.operate(item);
+            self.operate(item)?;
         }
 
-        self.stack.topmost()
+        Ok(self.stack.topmost())
     }
 
     /// Returns the number of [`Value`s][Value] currently in the [`Stack`][Stack].
@@ -187,11 +201,16 @@ where
 /// The explanation for this is straightforward: how do you print a dynamic reference to a function?
 ///
 /// [Stack]: ../stack/struct.Stack.html
-impl<'a, Op, Val> core::fmt::Debug for Machine<'a, Op, Val>
+impl<Op, Val, F, E> core::fmt::Debug for Machine<Op, Val, F, E>
 where
-    Val: core::fmt::Debug + core::cmp::PartialEq,
+    Op: core::fmt::Debug + core::cmp::Eq,
+    Val: core::fmt::Debug + core::cmp::PartialEq + core::clone::Clone,
+    F: FnMut(&mut Stack<Val>, &Op, &mut ConditionStack) -> Result<(), E>,
 {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> Result<(), core::fmt::Error> {
-        write!(f, "{:?}", self.stack)
+        f.debug_struct("Machine")
+            .field("stack", &self.stack)
+            .field("if_stack", &self.if_stack)
+            .finish()
     }
 }

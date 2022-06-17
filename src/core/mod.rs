@@ -2,6 +2,7 @@ use alloc::vec::Vec;
 
 use crate::core::value::Value;
 
+pub mod condition_stack;
 pub mod item;
 pub mod machine;
 pub mod stack;
