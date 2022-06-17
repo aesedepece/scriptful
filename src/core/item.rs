@@ -10,7 +10,7 @@ use crate::core::value::Value;
 ///
 /// [Script]: ../type.Script.html
 /// [core]: https://doc.rust-lang.org/nightly/core/
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 #[cfg_attr(feature = "use_serde", derive(serde::Deserialize, serde::Serialize))]
 pub enum Item<Op, Val = Value>
 where
