@@ -27,27 +27,27 @@ pub fn simple_math_op_sys(stack: &mut Stack, operator: &MathOperator) {
 
     match operator {
         MathOperator::Add => {
-            let a = stack.pop();
-            let b = stack.pop();
+            let a = stack.pop().unwrap();
+            let b = stack.pop().unwrap();
             stack.push(a + b);
         }
         MathOperator::Equal => {
-            let a = stack.pop();
-            let b = stack.pop();
+            let a = stack.pop().unwrap();
+            let b = stack.pop().unwrap();
             stack.push(Boolean(a == b));
         }
         MathOperator::Mul => {
-            let a = stack.pop();
-            let b = stack.pop();
+            let a = stack.pop().unwrap();
+            let b = stack.pop().unwrap();
             stack.push(a * b);
         }
         MathOperator::Not => {
-            let x = stack.pop();
+            let x = stack.pop().unwrap();
             stack.push(!x);
         }
         MathOperator::Sub => {
-            let a = stack.pop();
-            let b = stack.pop();
+            let a = stack.pop().unwrap();
+            let b = stack.pop().unwrap();
             stack.push(a - b);
         }
     }

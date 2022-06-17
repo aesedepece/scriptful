@@ -37,7 +37,7 @@ pub enum Command {
 /// The main function that tells which creatures evolute and devolute into which other creatures.
 pub fn pokemon_op_sys(stack: &mut Stack<Creature>, operator: &Command) {
     use Creature::*;
-    let last_creature = stack.pop();
+    let last_creature = stack.pop().unwrap();
     match operator {
         Command::Evolute => stack.push(match last_creature {
             Bulbasaur => Ivysaur,

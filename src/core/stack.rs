@@ -60,9 +60,6 @@ where
 
     /// Removes the topmost value in the `main` sub-stack and returns it.
     ///
-    /// # Panics
-    /// Panics if there are no values left in the `main` stack.
-    ///
     /// # Examples
     ///
     /// ```rust
@@ -76,8 +73,8 @@ where
     ///
     /// assert_eq!(value, popped);
     /// ```
-    pub fn pop(&mut self) -> Val {
-        self.main.pop().unwrap()
+    pub fn pop(&mut self) -> Option<Val> {
+        self.main.pop()
     }
 
     /// Similar to [`pop`][pop], but instead of returning the popped value, it pushes it to the `alt` sub-stack.
